@@ -61,7 +61,8 @@ def main():
         ("Operator Precedence", "a = b + c * d"),
         ("Parentheses Priority", "x = (a + b) * (c - d)"),
         ("Multiple Operators", "result = a + b * c - d"),
-        ("Division & Parens", "x = (a + b) * c - d / e")
+        ("Division & Parens", "x = (a + b) * c - d / e"),
+        ("Vercel Test Expression", "result = (p + q) * (r - s)")
     ]
 
     invalid_test_cases = [
