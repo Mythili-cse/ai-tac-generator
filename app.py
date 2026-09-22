@@ -10,11 +10,12 @@ from dotenv import load_dotenv
 
 from lexer import Lexer
 from parser import Parser, analyze_expression_stats
-from tac_generator import TACGenerator
+from tac_generator import TACGenerator, convert_tac_to_representations
 from ai_processor import AIProcessor
 from validator import TACValidator
 
 load_dotenv(override=True)
+
 
 app = Flask(__name__)
 
@@ -100,18 +101,29 @@ def generate_tac():
     # Calculate syntax & expression statistics
     expr_stats = analyze_expression_stats(tokens, ast)
 
-    # Stage 4: TAC Generation (Deterministic Compiler Engine)
+    # Stage 4: TAC Generation & Intermediate Code Conversion (Compiler Engine)
     generator = TACGenerator()
     instructions, tac_meta = generator.generate(ast)
     tac_strings = [instr.to_string() for instr in instructions]
     tac_dicts = [instr.to_dict() for instr in instructions]
+
+    # Derivation of Quadruples, Triples, and Indirect Triples (Phase II)
+    representations = convert_tac_to_representations(instructions)
 
     # Stage 5: TAC Validation
     validation = TACValidator.validate(instructions, ast.target, tokens)
 
     # Stage 6: Google Gemini AI Analysis (only called on valid expressions)
     ai_proc = AIProcessor()
-    ai_response = ai_proc.analyze(expression, [t.to_dict() for t in tokens], tac_strings, expr_stats)
+    ai_response = ai_proc.analyze(
+        expression,
+        [t.to_dict() for t in tokens],
+        tac_strings,
+        expr_stats,
+        representations["quadruples"],
+        representations["triples"],
+        representations["indirect_triples"]
+    )
 
     elapsed_ms = round((time.time() - start_time) * 1000, 2)
 
@@ -123,6 +135,9 @@ def generate_tac():
         "syntax_analysis": expr_stats,
         "tac": tac_strings,
         "tac_details": tac_dicts,
+        "quadruples": representations["quadruples"],
+        "triples": representations["triples"],
+        "indirect_triples": representations["indirect_triples"],
         "tac_meta": {
             "execution_time_ms": elapsed_ms,
             "temporary_count": tac_meta["temporary_count"],
@@ -147,9 +162,19 @@ def explain_tac():
     expression = data["expression"].strip()
     tac_lines = data["tac"]
     syntax_analysis = data.get("syntax_analysis", {})
+    quadruples = data.get("quadruples")
+    triples = data.get("triples")
+    indirect_triples = data.get("indirect_triples")
 
     ai_proc = AIProcessor()
-    explanation_res = ai_proc.explain_with_gemini(expression, tac_lines, syntax_analysis)
+    explanation_res = ai_proc.explain_with_gemini(
+        expression,
+        tac_lines,
+        syntax_analysis,
+        quadruples,
+        triples,
+        indirect_triples
+    )
 
     return jsonify({
         "success": True,

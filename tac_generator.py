@@ -97,3 +97,69 @@ class TACGenerator:
 
         else:
             raise ValueError(f"Unknown AST node type: {type(node)}")
+
+
+def convert_tac_to_representations(instructions: List[TACInstruction]) -> Dict[str, Any]:
+    """
+    Derive Quadruple, Triple, and Indirect Triple intermediate code representations
+    dynamically from a list of Three-Address Code instructions.
+    """
+    quadruples: List[Dict[str, Any]] = []
+    triples: List[Dict[str, Any]] = []
+    pointer_table: List[Dict[str, Any]] = []
+    temp_to_triple_map: Dict[str, str] = {}
+
+    for idx, instr in enumerate(instructions):
+        # 1. Quadruple Representation: (op, arg1, arg2, result)
+        op_quad = instr.op if instr.op else "="
+        arg1_quad = instr.arg1 if instr.arg1 else "-"
+        arg2_quad = instr.arg2 if instr.arg2 else "-"
+        result_quad = instr.target if instr.target else "-"
+
+        quadruples.append({
+            "index": idx,
+            "op": op_quad,
+            "arg1": arg1_quad,
+            "arg2": arg2_quad,
+            "result": result_quad
+        })
+
+        # 2. Triple Representation: (index, op, arg1, arg2)
+        # Substitute temporary variable names (t1, t2) with triple index references e.g. (0), (1)
+        arg1_triple = temp_to_triple_map.get(instr.arg1, instr.arg1)
+        arg2_triple = temp_to_triple_map.get(instr.arg2, instr.arg2) if instr.arg2 else "-"
+
+        if instr.op:
+            op_triple = instr.op
+            t_arg1 = arg1_triple
+            t_arg2 = arg2_triple
+            temp_to_triple_map[instr.target] = f"({idx})"
+        else:
+            op_triple = "="
+            t_arg1 = instr.target
+            t_arg2 = arg1_triple
+
+        triple_index_str = f"({idx})"
+        triples.append({
+            "index": triple_index_str,
+            "op": op_triple,
+            "arg1": t_arg1,
+            "arg2": t_arg2
+        })
+
+        # 3. Indirect Triple Representation: Pointer Table + Triples Table
+        pointer_table.append({
+            "statement_no": idx,
+            "pointer": f"P{idx}",
+            "triple_ref": f"→ ({idx})"
+        })
+
+    return {
+        "quadruples": quadruples,
+        "triples": triples,
+        "indirect_triples": {
+            "pointers": pointer_table,
+            "triples": triples
+        }
+    }
+

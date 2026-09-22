@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AI-Driven Three-Address Code Generator | Compiler Design Mini Project</title>
+    <title>AI-Driven Three-Address Code Generator | Compiler Design Project</title>
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -16,435 +16,458 @@
 <body>
 
     <!-- ====================================================================
-         PAGE 1: HOME / PROJECT INTRODUCTION (#pageHome)
+         SCREEN 1: INITIAL LOADING SCREEN (#screenLoading)
          ==================================================================== -->
-    <div id="pageHome" class="page-container">
-        <!-- Top Navigation -->
-        <nav class="home-nav">
-            <div class="nav-brand" onclick="switchPage('home')">
-                <span class="brand-logo">AI-TAC</span>
-                <span class="brand-divider">|</span>
-                <span class="brand-name">Three-Address Code Generator</span>
+    <div id="screenLoading" class="loading-screen-backdrop">
+        <div class="loading-content-box">
+            <div class="loading-brand-icon">
+                <i class="fa-solid fa-code"></i>
             </div>
-            <div class="nav-menu">
-                <a href="#pageHome" onclick="switchPage('home')">Home</a>
-                <a href="#how-it-works" onclick="switchPage('home')">How It Works</a>
-                <a href="#about" onclick="switchPage('home')">About</a>
-                <button class="btn btn-primary btn-sm" onclick="switchPage('generator')">Launch Generator</button>
+            <h1 class="loading-brand-title">AI-TAC</h1>
+            <p class="loading-brand-subtitle">AI-Driven Three-Address Code Generator</p>
+            
+            <div class="loading-terminal-box">
+                <div class="terminal-line"><span class="t-prompt">&gt;</span> <span id="loadingTerminalText">Initializing compiler intermediate representation engine...</span></div>
+            </div>
+
+            <div class="loading-progress-track">
+                <div class="loading-progress-fill" id="loadingProgressFill"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================================================================
+         SCREEN 2: PROFESSIONAL LANDING PAGE (#screenLanding)
+         ==================================================================== -->
+    <div id="screenLanding" class="landing-screen-container hidden">
+        <!-- Top Navigation Bar -->
+        <nav class="landing-navbar">
+            <div class="nav-container">
+                <div class="nav-brand" onclick="navigateToLanding()">
+                    <span class="brand-title">AI-TAC</span>
+                    <span class="brand-divider">|</span>
+                    <span class="brand-subtitle">Three-Address Code Generator</span>
+                </div>
+                <div class="nav-menu">
+                    <a href="#overview" class="nav-link">Overview</a>
+                    <a href="#features" class="nav-link">Features</a>
+                    <button class="btn btn-primary btn-sm" onclick="navigateToWorkspace()">Launch Generator &rarr;</button>
+                </div>
             </div>
         </nav>
 
-        <!-- Hero Section -->
-        <section class="hero-block">
-            <div class="hero-left">
-                <span class="project-tag">COMPILER DESIGN PROJECT</span>
-                <h1 class="hero-heading">AI-Driven<br>Three-Address Code Generator</h1>
-                <p class="hero-subheading">
-                    Transform arithmetic expressions into structured Three-Address Code through lexical analysis, syntax analysis, precedence handling and intermediate-code generation.
+        <!-- Main Landing Hero -->
+        <header class="landing-hero-section">
+            <div class="hero-container">
+                <span class="hero-badge">COMPILER DESIGN MINI PROJECT</span>
+                <h1 class="hero-title">AI-Driven<br>Three-Address Code Generator</h1>
+                <p class="hero-subtitle">
+                    An intelligent compiler tool for generating and analyzing intermediate code representations from arithmetic expressions.
                 </p>
-                <div class="hero-btn-group">
-                    <button class="btn btn-primary btn-lg" onclick="switchPage('generator')">
-                        START GENERATING &rarr;
+                
+                <div class="hero-cta-group">
+                    <button class="btn btn-primary btn-lg hero-cta-btn" onclick="navigateToWorkspace()">
+                        GENERATE INTERMEDIATE CODE &rarr;
                     </button>
-                    <a href="#how-it-works" class="btn btn-secondary btn-lg">
-                        EXPLORE HOW IT WORKS
-                    </a>
+                </div>
+                
+                <div class="hero-features-strip">
+                    <span>TAC</span>
+                    <span class="dot">&bull;</span>
+                    <span>Quadruples</span>
+                    <span class="dot">&bull;</span>
+                    <span>Triples</span>
+                    <span class="dot">&bull;</span>
+                    <span>Indirect Triples</span>
                 </div>
             </div>
+        </header>
 
-            <!-- Right Side Realistic Compiler Preview Visual -->
-            <div class="hero-right">
-                <div class="compiler-preview-box">
-                    <div class="preview-box-header">
-                        <span>Compiler Design Workbench Preview</span>
+        <!-- Compiler Pipeline Features Grid -->
+        <section id="features" class="landing-section">
+            <div class="section-container">
+                <div class="section-header">
+                    <h2>Compiler Intermediate Pass Architecture</h2>
+                    <p>Designed to demonstrate standard phase-II compiler intermediate code passes.</p>
+                </div>
+
+                <div class="features-cards-grid">
+                    <div class="feature-card">
+                        <div class="feat-icon"><i class="fa-solid fa-font"></i></div>
+                        <h3>Lexical Analysis</h3>
+                        <p>Scans input assignments into categorized token streams tracking position and category.</p>
                     </div>
-                    <div class="preview-box-body">
-                        <div class="preview-stage">
-                            <div class="stage-label">SOURCE EXPRESSION</div>
-                            <code class="code-line main-expr">x = (a + b) * (c - d)</code>
-                        </div>
 
-                        <div class="preview-flow-arrow">&darr; Lexical Analysis</div>
-
-                        <div class="preview-stage">
-                            <div class="stage-label">TOKENS</div>
-                            <code class="code-line token-line">IDENTIFIER, ASSIGN, LPAREN, IDENTIFIER, PLUS, IDENTIFIER, RPAREN, MULTIPLY...</code>
-                        </div>
-
-                        <div class="preview-flow-arrow">&darr; TAC GENERATION</div>
-
-                        <div class="preview-stage">
-                            <div class="stage-label">THREE-ADDRESS CODE</div>
-                            <div class="tac-preview-list">
-                                <div><span class="ln">01</span> t1 = a + b</div>
-                                <div><span class="ln">02</span> t2 = c - d</div>
-                                <div><span class="ln">03</span> t3 = t1 * t2</div>
-                                <div><span class="ln">04</span> x  = t3</div>
-                            </div>
-                        </div>
+                    <div class="feature-card">
+                        <div class="feat-icon"><i class="fa-solid fa-sitemap"></i></div>
+                        <h3>Syntax & Precedence</h3>
+                        <p>Constructs AST enforcing arithmetic operator precedence and parentheses priority.</p>
                     </div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Section: What The Project Does -->
-        <section class="home-section">
-            <div class="section-title-block">
-                <h2>Compiler Pipeline Capabilities</h2>
-            </div>
-            <div class="features-grid">
-                <div class="feature-card">
-                    <h3>LEXICAL ANALYSIS</h3>
-                    <p>Breaks the input expression into a stream of typed tokens (identifiers, operators, parentheses) with category tracking.</p>
-                </div>
-                <div class="feature-card">
-                    <h3>SYNTAX & PRECEDENCE</h3>
-                    <p>Checks AST grammar rules and enforces strict operator precedence (parentheses () over * and /, then + and -).</p>
-                </div>
-                <div class="feature-card">
-                    <h3>THREE-ADDRESS CODE</h3>
-                    <p>Converts complex nested expressions into intermediate instructions using sequential temporary variables (t1, t2, ...).</p>
-                </div>
-                <div class="feature-card feature-ai">
-                    <h3>AI EXPLANATION</h3>
-                    <p>Uses an optional LLM layer to explain intermediate code evaluation steps, register allocation, and optimization logic.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section: How It Works -->
-        <section id="how-it-works" class="home-section">
-            <div class="section-title-block">
-                <h2>How It Works</h2>
-            </div>
-            <div class="process-steps-grid">
-                <div class="step-card">
-                    <div class="step-num">01</div>
-                    <h4>INPUT</h4>
-                    <p>Enter an arithmetic assignment expression.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">02</div>
-                    <h4>LEXER</h4>
-                    <p>Scans string into categorized token stream.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">03</div>
-                    <h4>PARSER</h4>
-                    <p>Builds recursive-descent Abstract Syntax Tree.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">04</div>
-                    <h4>EXPRESSION ANALYZER</h4>
-                    <p>Calculates evaluation order and precedence.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">05</div>
-                    <h4>TAC GENERATOR</h4>
-                    <p>Emits 3-address instructions via AST traversal.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">06</div>
-                    <h4>VALIDATOR</h4>
-                    <p>Verifies 6 compiler integrity checks.</p>
-                </div>
-                <div class="step-card">
-                    <div class="step-num">07</div>
-                    <h4>AI EXPLANATION</h4>
-                    <p>Provides optional LLM-driven interpretation.</p>
-                </div>
-            </div>
-        </section>
-
-        <!-- Section: Example -->
-        <section class="home-section">
-            <div class="section-title-block">
-                <h2>Intermediate Code Example</h2>
-            </div>
-            <div class="example-box-grid">
-                <div class="example-column">
-                    <div class="ex-label">Input Expression</div>
-                    <code class="ex-code">x = (a + b) * (c - d)</code>
-                </div>
-                <div class="example-column">
-                    <div class="ex-label">Generated Three-Address Code</div>
-                    <div class="ex-code tac-ex">
-                        <div>01  t1 = a + b</div>
-                        <div>02  t2 = c - d</div>
-                        <div>03  t3 = t1 * t2</div>
-                        <div>04  x  = t3</div>
+                    <div class="feature-card">
+                        <div class="feat-icon"><i class="fa-solid fa-code"></i></div>
+                        <h3>Three-Address Code</h3>
+                        <p>Emits linearized instructions using sequential temporary variables (t1, t2, ...).</p>
                     </div>
-                </div>
-            </div>
-            <div class="example-caption">
-                Intermediate code is generated according to operator precedence and expression grouping.
-            </div>
-        </section>
 
-        <!-- About Section -->
-        <section id="about" class="home-section">
-            <div class="section-title-block">
-                <h2>About This Project</h2>
-            </div>
-            <div class="about-grid">
-                <div class="about-box">
-                    <h4>Problem Statement</h4>
-                    <p>Manual generation of Three-Address Code for complex expressions can be tedious and error-prone during compiler intermediate passes.</p>
-                </div>
-                <div class="about-box">
-                    <h4>Project Objective</h4>
-                    <p>Automate intermediate code generation while demonstrating lexical analysis, syntax analysis, precedence handling and TAC generation.</p>
-                </div>
-                <div class="about-box">
-                    <h4>Technologies Used</h4>
-                    <div class="tech-tags">
-                        <span>Python</span>
-                        <span>Flask</span>
-                        <span>HTML</span>
-                        <span>CSS</span>
-                        <span>JavaScript</span>
-                        <span>Compiler Design</span>
-                        <span>Optional LLM API</span>
+                    <div class="feature-card">
+                        <div class="feat-icon"><i class="fa-solid fa-table"></i></div>
+                        <h3>Quadruples & Triples</h3>
+                        <p>Derives explicit 4-tuple and 3-tuple tables directly from intermediate instructions.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feat-icon"><i class="fa-solid fa-link"></i></div>
+                        <h3>Indirect Triples</h3>
+                        <p>Generates statement pointer tables decoupling reference pointers from triple data records.</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feat-icon"><i class="fa-solid fa-wand-magic-sparkles"></i></div>
+                        <h3>AI Assistance</h3>
+                        <p>Optional LLM interpretation for step-by-step evaluation order and register allocation.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- Final CTA -->
-        <section class="cta-banner">
-            <h2>Ready to generate intermediate code?</h2>
-            <button class="btn btn-primary btn-lg" onclick="switchPage('generator')">
-                [ OPEN TAC GENERATOR ]
-            </button>
-        </section>
-
-        <!-- Home Footer -->
-        <footer class="site-footer">
-            <div class="footer-title">AI-Driven Three-Address Code Generator</div>
-            <div class="footer-subtitle">Compiler Design Mini Project</div>
-            <div class="footer-meta">Python &bull; Flask &bull; Compiler Design &bull; AI Assistance</div>
+        <!-- Landing Footer -->
+        <footer class="landing-footer">
+            <div class="footer-container">
+                <p>AI-Driven Three-Address Code Generator &bull; Compiler Design Project &bull; Phase II Demonstration</p>
+            </div>
         </footer>
     </div>
 
-
     <!-- ====================================================================
-         PAGE 2: GENERATOR WORKBENCH (#pageGenerator)
+         SCREEN 3: COMPILER GENERATOR WORKSPACE (#screenWorkspace)
          ==================================================================== -->
-    <div id="pageGenerator" class="page-container hidden">
-        <!-- Top Generator Navigation -->
-        <nav class="generator-nav">
-            <button class="nav-back-btn" onclick="switchPage('home')">
-                &larr; Home
-            </button>
-            <div class="nav-gen-title">
-                <span class="brand-logo">AI-TAC</span>
-                <span class="brand-divider">|</span>
-                <span class="brand-name">Three-Address Code Generator</span>
-            </div>
-            <div class="nav-engine-status">
-                Compiler Engine Online
+    <div id="screenWorkspace" class="workspace-screen-container hidden">
+        <!-- Top Workspace Bar -->
+        <nav class="workspace-navbar">
+            <div class="ws-nav-container">
+                <button class="nav-back-btn" onclick="navigateToLanding()">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Home
+                </button>
+
+                <div class="ws-brand-title">
+                    <span class="brand-title">AI-TAC</span>
+                    <span class="brand-divider">|</span>
+                    <span class="brand-subtitle">Three-Address Code Generator</span>
+                </div>
+
+                <div class="engine-tag">
+                    <span class="engine-dot"></span> Compiler Engine Online
+                </div>
             </div>
         </nav>
 
-        <!-- Main Workbench Split View -->
-        <main class="workbench-layout">
-            
-            <!-- LEFT WORKSPACE: SOURCE EXPRESSION INPUT -->
-            <div class="workbench-left">
-                <section class="wb-card">
-                    <div class="wb-card-title">SOURCE EXPRESSION</div>
-                    
-                    <div class="code-editor-area">
-                        <textarea 
-                            id="expressionInput" 
-                            placeholder="Enter an arithmetic assignment expression..." 
-                            spellcheck="false" 
-                            rows="2"
-                        >x = (a + b) * (c - d)</textarea>
-                    </div>
+        <!-- Main Workspace Area -->
+        <main class="workspace-content">
+            <!-- Workspace Hero Header -->
+            <header class="ws-header-block">
+                <h1 class="ws-title">Compiler Intermediate Code Generator</h1>
+                <p class="ws-subtitle">Enter an arithmetic expression and generate multiple intermediate code representations.</p>
+            </header>
 
-                    <!-- Compact Example Expressions -->
-                    <div class="presets-row">
-                        <span class="presets-label">Example expressions:</span>
-                        <div class="presets-btns">
-                            <button class="pill-btn" onclick="loadExample('a = b + c')">Basic</button>
-                            <button class="pill-btn" onclick="loadExample('a = b + c * d')">Precedence</button>
-                            <button class="pill-btn" onclick="loadExample('x = (a + b) * (c - d)')">Parentheses</button>
-                            <button class="pill-btn" onclick="loadExample('x = ((a + b) * c) - d')">Nested</button>
-                            <button class="pill-btn" onclick="loadExample('y = a + b * c - d / e')">Complex</button>
-                            <button class="pill-btn pill-invalid" onclick="loadExample('x = a + * b')">Invalid</button>
-                        </div>
-                    </div>
+            <!-- Expression Input Panel -->
+            <section class="ws-card input-panel-card">
+                <div class="card-header">
+                    <span class="panel-label"><i class="fa-solid fa-terminal"></i> ENTER EXPRESSION</span>
+                </div>
 
-                    <!-- Action Buttons -->
-                    <div class="wb-actions">
-                        <button id="generateBtn" class="btn btn-primary" onclick="generateTAC()">
-                            GENERATE TAC
-                        </button>
-                        <button id="resetBtn" class="btn btn-secondary" onclick="resetStudio()">
-                            CLEAR
-                        </button>
-                    </div>
+                <div class="input-editor-wrapper">
+                    <textarea 
+                        id="expressionInput" 
+                        placeholder="Example: x = (a + b) * (c - d)" 
+                        spellcheck="false" 
+                        rows="2"
+                    >x = (a + b) * (c - d)</textarea>
+                </div>
 
-                    <!-- Diagnostic Error Banner -->
-                    <div id="errorBanner" class="error-banner-box hidden">
-                        <div class="err-header"><span id="errorStage">Compiler Diagnostic Error</span></div>
-                        <div id="errorMessage" class="err-body">Invalid expression structure.</div>
+                <!-- Presets Bar -->
+                <div class="presets-row">
+                    <span class="presets-label">Presets:</span>
+                    <div class="presets-buttons">
+                        <button class="preset-btn" onclick="loadExample('a = b + c * d')">a = b + c * d</button>
+                        <button class="preset-btn" onclick="loadExample('x = (a + b) * (c - d)')">x = (a + b) * (c - d)</button>
+                        <button class="preset-btn" onclick="loadExample('result = a * b + c / d - e')">result = a * b + c / d - e</button>
+                        <button class="preset-btn btn-invalid" onclick="loadExample('x = a + * b')">Invalid Input</button>
                     </div>
-                </section>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="action-btn-row">
+                    <button id="generateBtn" class="btn btn-primary btn-lg" onclick="generateTAC()">
+                        GENERATE INTERMEDIATE CODE
+                    </button>
+                    <button id="resetBtn" class="btn btn-secondary btn-lg" onclick="resetStudio()">
+                        CLEAR
+                    </button>
+                </div>
+
+                <!-- Diagnostic Error Banner -->
+                <div id="errorBanner" class="error-banner-box hidden">
+                    <div class="err-header"><i class="fa-solid fa-circle-exclamation"></i> <span id="errorStage">Compiler Diagnostic Error</span></div>
+                    <div id="errorMessage" class="err-body">Invalid expression structure.</div>
+                </div>
+            </section>
+
+            <!-- Compiler Overview Stage Checklist -->
+            <section class="ws-card pipeline-status-card">
+                <div class="panel-label"><i class="fa-solid fa-microchip"></i> COMPILER PIPELINE STATUS</div>
+                <div class="stages-checklist">
+                    <div class="stage-item">
+                        <span class="stg-name">Input Lexer</span>
+                        <span id="stgInput" class="stg-status status-ready">READY</span>
+                    </div>
+                    <div class="stage-item">
+                        <span class="stg-name">Lexical Analysis</span>
+                        <span id="stgLexer" class="stg-status status-ready">READY</span>
+                    </div>
+                    <div class="stage-item">
+                        <span class="stg-name">Syntax Analysis</span>
+                        <span id="stgParser" class="stg-status status-ready">READY</span>
+                    </div>
+                    <div class="stage-item">
+                        <span class="stg-name">TAC Generation</span>
+                        <span id="stgTac" class="stg-status status-ready">READY</span>
+                    </div>
+                    <div class="stage-item">
+                        <span class="stg-name">Validation</span>
+                        <span id="stgVal" class="stg-status status-ready">READY</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Loading Spinner -->
+            <div id="loadingSpinner" class="loading-overlay-box hidden">
+                <div class="spinner"></div>
+                <p>Executing Compiler Engine...</p>
             </div>
 
-            <!-- RIGHT WORKSPACE: COMPILER OVERVIEW STAGE STATUS -->
-            <div class="workbench-right">
-                <section class="wb-card">
-                    <div class="wb-card-title">COMPILER OVERVIEW</div>
-                    
-                    <div class="stages-checklist">
-                        <div class="stage-item">
-                            <span class="stg-name">Input</span>
-                            <span id="stgInput" class="stg-status status-ready">READY</span>
-                        </div>
-                        <div class="stage-item">
-                            <span class="stg-name">Lexical Analysis</span>
-                            <span id="stgLexer" class="stg-status status-ready">READY</span>
-                        </div>
-                        <div class="stage-item">
-                            <span class="stg-name">Syntax Analysis</span>
-                            <span id="stgParser" class="stg-status status-ready">READY</span>
-                        </div>
-                        <div class="stage-item">
-                            <span class="stg-name">TAC Generation</span>
-                            <span id="stgTac" class="stg-status status-ready">READY</span>
-                        </div>
-                        <div class="stage-item">
-                            <span class="stg-name">Validation</span>
-                            <span id="stgVal" class="stg-status status-ready">READY</span>
+            <!-- RESULTS SECTION (Revealed AFTER clicking generate) -->
+            <div id="resultsSection" class="results-container hidden">
+
+                <!-- 1. INTERMEDIATE CODE REPRESENTATIONS CARD -->
+                <section class="ws-card output-panel-card">
+                    <div class="output-header-row">
+                        <div class="panel-label title-heading">INTERMEDIATE CODE REPRESENTATIONS</div>
+                        <div class="export-actions">
+                            <button id="copyRepBtn" class="btn btn-secondary btn-sm" onclick="copyCurrentRep()">
+                                <i class="fa-regular fa-copy"></i> COPY TAC
+                            </button>
+                            <button id="downloadRepBtn" class="btn btn-secondary btn-sm" onclick="downloadCurrentRep()">
+                                <i class="fa-solid fa-download"></i> DOWNLOAD TAC
+                            </button>
                         </div>
                     </div>
-                </section>
-            </div>
 
+                    <!-- Representation Switcher Tabs -->
+                    <div class="rep-tabs-nav">
+                        <button id="tabBtnTac" class="rep-tab active" onclick="switchRepTab('tac')">
+                            1. Three-Address Code
+                        </button>
+                        <button id="tabBtnQuad" class="rep-tab" onclick="switchRepTab('quadruples')">
+                            2. Quadruples
+                        </button>
+                        <button id="tabBtnTrip" class="rep-tab" onclick="switchRepTab('triples')">
+                            3. Triples
+                        </button>
+                        <button id="tabBtnInd" class="rep-tab" onclick="switchRepTab('indirect')">
+                            4. Indirect Triples
+                        </button>
+                    </div>
+
+                    <!-- TAB 1: Three-Address Code -->
+                    <div id="repViewTac" class="rep-panel-view">
+                        <div id="tacCodeContainer" class="tac-code-box">
+                            <!-- TAC instructions populated dynamically -->
+                        </div>
+                    </div>
+
+                    <!-- TAB 2: Quadruples Table -->
+                    <div id="repViewQuadruples" class="rep-panel-view hidden">
+                        <div class="table-wrapper">
+                            <table class="rep-data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Index</th>
+                                        <th>Operator</th>
+                                        <th>Arg1</th>
+                                        <th>Arg2</th>
+                                        <th>Result</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="quadruplesTableBody">
+                                    <!-- Quadruples inserted dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB 3: Triples Table -->
+                    <div id="repViewTriples" class="rep-panel-view hidden">
+                        <div class="table-wrapper">
+                            <table class="rep-data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Index</th>
+                                        <th>Operator</th>
+                                        <th>Arg1</th>
+                                        <th>Arg2</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="triplesTableBody">
+                                    <!-- Triples inserted dynamically -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- TAB 4: Indirect Triples -->
+                    <div id="repViewIndirect" class="rep-panel-view hidden">
+                        <div class="indirect-stack-layout">
+                            <!-- Section 1: Pointer Table -->
+                            <div class="indirect-section">
+                                <div class="section-subtitle">INDIRECT TRIPLE POINTER TABLE</div>
+                                <div class="table-wrapper">
+                                    <table class="rep-data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Pointer</th>
+                                                <th>Triple Reference</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="indirectPointersBody">
+                                            <!-- Pointers inserted dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <!-- Section 2: Triples Table -->
+                            <div class="indirect-section">
+                                <div class="section-subtitle">TRIPLES TABLE</div>
+                                <div class="table-wrapper">
+                                    <table class="rep-data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>Index</th>
+                                                <th>Operator</th>
+                                                <th>Arg1</th>
+                                                <th>Arg2</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="indirectTriplesBody">
+                                            <!-- Reference triples inserted dynamically -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="indirect-note">
+                            <i class="fa-solid fa-circle-info"></i>
+                            <span>Indirect triples use a separate pointer table to reference triple statements.</span>
+                        </div>
+                    </div>
+
+                    <div class="meta-footer">
+                        <span id="instrCountBadge">0 instructions</span>
+                        <span class="dot">&bull;</span>
+                        <span id="tempCountBadge">0 temporaries</span>
+                        <span class="dot">&bull;</span>
+                        <span id="execTimeBadge">0.00 ms</span>
+                    </div>
+                </section>
+
+                <!-- 2. COMPILER ANALYSIS -->
+                <section class="ws-card analysis-card">
+                    <div class="panel-label">COMPILER ANALYSIS</div>
+
+                    <div class="analysis-compact-grid">
+                        <div class="an-item">
+                            <span class="an-key">Syntax</span>
+                            <span id="synStatus" class="an-val val-good">VALID</span>
+                        </div>
+                        <div class="an-item">
+                            <span class="an-key">Parentheses</span>
+                            <span id="synParen" class="an-val">BALANCED</span>
+                        </div>
+                        <div class="an-item">
+                            <span class="an-key">Assignment</span>
+                            <span id="synAssign" class="an-val val-good">VALID</span>
+                        </div>
+                        <div class="an-item">
+                            <span class="an-key">Operators</span>
+                            <span id="synOps" class="an-val">3</span>
+                        </div>
+                        <div class="an-item">
+                            <span class="an-key">Operands</span>
+                            <span id="synOperands" class="an-val">4</span>
+                        </div>
+                        <div class="an-item">
+                            <span class="an-key">Precedence</span>
+                            <span id="synPrecedence" class="an-val">CORRECT</span>
+                        </div>
+                    </div>
+
+                    <div class="eval-order-box">
+                        <div class="section-subtitle">EVALUATION ORDER</div>
+                        <ol id="evalOrderList" class="eval-ol"></ol>
+                    </div>
+                </section>
+
+                <!-- 3. LEXICAL ANALYSIS TOKENS TABLE -->
+                <section class="ws-card">
+                    <div class="panel-label">LEXICAL ANALYSIS</div>
+                    
+                    <div class="table-wrapper">
+                        <table class="rep-data-table">
+                            <thead>
+                                <tr>
+                                    <th>Position</th>
+                                    <th>Token Type</th>
+                                    <th>Lexeme</th>
+                                    <th>Category</th>
+                                </tr>
+                            </thead>
+                            <tbody id="tokensTableBody">
+                                <!-- Token rows inserted dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </section>
+
+                <!-- 4. TAC VALIDATION CHECKLIST -->
+                <section class="ws-card">
+                    <div class="panel-label">TAC VALIDATION</div>
+
+                    <div id="validationChecklist" class="checklist-grid">
+                        <!-- Validation check items inserted dynamically -->
+                    </div>
+                    <div id="validationSummary" class="val-summary-text"></div>
+                </section>
+
+                <!-- 5. OPTIONAL COMPACT AI EXPLANATION SECTION -->
+                <section class="ws-card ai-card">
+                    <div class="ai-header">
+                        <div class="panel-label">AI EXPLANATION</div>
+                        <span id="aiBrandTag" class="ai-tag hidden">Google Gemini</span>
+                    </div>
+
+                    <div class="ai-status-text-box">
+                        <span id="aiStatusText">AI explanation temporarily unavailable. Compiler generation remains fully functional.</span>
+                    </div>
+
+                    <button id="explainAiBtn" class="btn btn-secondary btn-sm" onclick="explainWithAI()">
+                        <i class="fa-solid fa-wand-magic-sparkles"></i> EXPLAIN WITH AI
+                    </button>
+                </section>
+
+            </div>
         </main>
-
-        <!-- Loading Indicator -->
-        <div id="loadingSpinner" class="loading-overlay-box hidden">
-            <div class="spinner"></div>
-            <p>Executing Compiler Engine...</p>
-        </div>
-
-        <!-- RESULT AREA (Visible after Generate TAC) -->
-        <div id="resultsSection" class="results-area hidden">
-
-            <!-- 1. GENERATED THREE-ADDRESS CODE -->
-            <section class="wb-card tac-result-card">
-                <div class="tac-header-row">
-                    <div class="wb-card-title">GENERATED THREE-ADDRESS CODE</div>
-                    <div class="tac-action-buttons">
-                        <button class="btn btn-secondary btn-sm" onclick="copyTAC()">Copy</button>
-                        <button class="btn btn-secondary btn-sm" onclick="downloadTAC()">Download</button>
-                    </div>
-                </div>
-
-                <div id="tacCodeContainer" class="tac-editor-block">
-                    <!-- TAC lines populated dynamically -->
-                </div>
-
-                <div class="tac-meta-footer">
-                    <span id="instrCountBadge">0 instructions</span>
-                    <span class="dot-sep">&bull;</span>
-                    <span id="tempCountBadge">0 temporaries</span>
-                    <span class="dot-sep">&bull;</span>
-                    <span id="execTimeBadge">0.00 ms</span>
-                </div>
-            </section>
-
-            <!-- 2. COMPILER ANALYSIS -->
-            <section class="wb-card">
-                <div class="wb-card-title">COMPILER ANALYSIS</div>
-
-                <div class="analysis-grid-layout">
-                    <div class="an-cell">
-                        <span class="an-key">Syntax</span>
-                        <span id="synStatus" class="an-val val-good">VALID</span>
-                    </div>
-                    <div class="an-cell">
-                        <span class="an-key">Parentheses</span>
-                        <span id="synParen" class="an-val">BALANCED</span>
-                    </div>
-                    <div class="an-cell">
-                        <span class="an-key">Operators</span>
-                        <span id="synOps" class="an-val">3</span>
-                    </div>
-                    <div class="an-cell">
-                        <span class="an-key">Operands</span>
-                        <span id="synOperands" class="an-val">5</span>
-                    </div>
-                    <div class="an-cell">
-                        <span class="an-key">Assignment</span>
-                        <span id="synAssign" class="an-val val-good">VALID</span>
-                    </div>
-                    <div class="an-cell">
-                        <span class="an-key">Precedence</span>
-                        <span id="synPrecedence" class="an-val">CORRECT</span>
-                    </div>
-                </div>
-
-                <div class="eval-order-wrapper">
-                    <div class="sub-title">EVALUATION ORDER</div>
-                    <ol id="evalOrderList" class="eval-steps-ol"></ol>
-                </div>
-            </section>
-
-            <!-- 3. LEXICAL ANALYSIS TABLE -->
-            <section class="wb-card">
-                <div class="wb-card-title">LEXICAL ANALYSIS</div>
-                
-                <div class="table-responsive-wrapper">
-                    <table class="tokens-data-table">
-                        <thead>
-                            <tr>
-                                <th>Position</th>
-                                <th>Token Type</th>
-                                <th>Lexeme</th>
-                                <th>Category</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tokensTableBody">
-                            <!-- Token rows inserted dynamically -->
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-
-            <!-- 4. TAC VALIDATION CHECKLIST -->
-            <section class="wb-card">
-                <div class="wb-card-title">TAC VALIDATION</div>
-
-                <div id="validationChecklist" class="checklist-grid">
-                    <!-- Validation check items inserted dynamically -->
-                </div>
-                <div id="validationSummary" class="val-summary-text"></div>
-            </section>
-
-            <!-- 5. OPTIONAL AI EXPLANATION SECTION -->
-            <section class="wb-card ai-sec-card">
-                <div class="ai-sec-header">
-                    <div class="wb-card-title">OPTIONAL AI EXPLANATION</div>
-                    <span id="aiBrandTag" class="ai-provider-tag hidden">Powered by Google Gemini</span>
-                </div>
-
-                <p class="ai-sec-desc">Use AI to understand and explain the generated intermediate code.</p>
-
-                <div class="ai-status-msg-box">
-                    <span id="aiStatusText">AI explanation unavailable. Compiler generation remains fully functional.</span>
-                </div>
-
-                <button class="btn btn-secondary btn-sm" onclick="explainWithAI()">
-                    EXPLAIN WITH AI
-                </button>
-            </section>
-
-        </div>
     </div>
 
     <!-- AI Explanation Modal -->
